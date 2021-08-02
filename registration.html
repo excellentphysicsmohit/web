@@ -1,0 +1,131 @@
+<html>  
+<head>  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<style>  
+body{  
+  font-family: Calibri, Helvetica, sans-serif;  
+  background-color: black;  
+}  
+.container {  
+    padding: 50px;  
+  background-color: black;  
+  border: 2px;
+  border-color: white;
+}  
+  
+input[type=text], input[type=password], textarea {  
+  width: 100%;  
+  padding: 15px;  
+  margin: 5px 0 22px 0;  
+  display: inline-block;  
+  border: none;  
+  background: #f1f1f1;  
+}  
+input[type=text]:focus, input[type=password]:focus {  
+  background-color: orange;  
+  outline: none;  
+}  
+ div {  
+            padding: 10px 0;  
+         }  
+hr {  
+  border: 1px solid #f1f1f1;  
+  margin-bottom: 25px;  
+}  
+.registerbtn {  
+  background-color: #7C94FF;  
+  color: white;  
+  padding: 16px 20px;  
+  margin: 8px 0;  
+  border: none;  
+  cursor: pointer;  
+  width: 100%;  
+  opacity: 0.9;  
+}  
+.registerbtn:hover {  
+  opacity: 1;  
+}  
+</style> 
+
+</head>  
+<body>  
+<center>
+<header>
+<hr color="white">
+<img src="assets/homepage/title.jpg" height="70" width="100%"><hr color="white" width="100%">
+</header>
+</center> 
+<form name="registration"> 
+<div class="container">  
+
+<font color="white"></font>
+
+
+
+  <label><font color="white"> Firstname</font>
+ </label>   
+<input type="text" name="firstname" placeholder= "Firstname" size="15" required />   
+<label><font color="white"> lastname:</font>
+ </label>   
+<input type="text" name="lastname" placeholder="lastname" size="15" required />   
+<label><font color="white"> Father Name:</font>
+ </label>    
+<input type="text" name="fathername" placeholder="Father Name" size="15"required />   
+
+<div>  
+<label><font color="white">   
+Phone :  </font>
+
+</label>  
+   
+<input type="text" name="phone" placeholder="Phone No." size="10"/ required> 
+
+<font color="white">  
+Current Address :  </font>
+
+<textarea cols="80" rows="3" placeholder="Current Address" name="address" value="address" required>  
+</textarea>  
+ <label for="email"><b>
+<font color="white">Email:</font>
+</b></label>  
+ <input type="text" placeholder="Enter Email" name="email" required>  
+ 
+ <button type="submit" class="registerbtn"><font color="black"><b>Register</b></font></button> 
+ <font color="red" size="7"><p id="response_message"></p> </font>
+ </center>
+  <br>
+<br>
+<br>
+<hr color="white">
+<br>
+<br>
+
+<br>
+<br>
+<br>
+ <hr color="white" width="100%">
+<center>
+<font color="white">
+ <p> © 2021 Excellent Defence Physics. All rights reserved | Designed by Akash</p> </font>
+     </div>
+        </div>
+    </footer>
+ <hr color="white">
+</center>
+ <script>
+
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzIui41ms5jEwId2yoOtosTafumLi6Ec66nhkpILlzWWDbEn3mxdQ2ufMEjuzd_TICXJA/exec'
+
+  const form = document.forms['registration']
+
+   form.addEventListener('submit', e => {
+    e.preventDefault()
+    var response_message = document.getElementById("response_message");
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => response_message.innerHTML = "Registered Successfull Go Back To Homepage!" )
+      .catch(error => response_message.innerHTML = "Error!")
+  })
+</script>
+</form>  
+</body>  
+</html>  
