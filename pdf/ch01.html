@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
+    />
+    <title>PDFr</title>
+    
+    
+    <style>
+        * {
+  margin: 0;
+  padding: 0;
+}
+
+.top-bar {
+  background: #333;
+  color: #fff;
+  padding: 1rem;
+  align-content: center;
+}
+
+.btn {
+  background: coral;
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0.7rem 2rem;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.page-info {
+  margin-left: 1rem;
+}
+
+.error {
+  background: orangered;
+  color: #fff;
+  padding: 1rem;
+}
+
+    </style>
+    
+    
+  </head>
+  <body bgcolor="black">
+      
+    
+    
+    
+    
+      <!--   TITLE IMAGE EXCELLENT DEFENCE PHYSICS   -->
+      
+      
+          <center>
+
+<header>
+<hr color="white">
+<img src="https://excellentphysicsmohit.github.io/web/assets/homepage/title.jpg" width="100%" height="90" ><hr color="white" width="100%">
+</center>
+</header>
+<br>
+    
+         <!--  Internet message --> 
+   <font color="white" ><h3><b><i>PDF is loading</b></i><br> Speed may be slow based on your internet Speed !</h3></font>
+   
+   
+         <!-- Internet message ends -->
+   
+   
+   
+   
+   
+   
+   <center>
+   
+   
+         <!--   PDF Section Starts Here   -->
+    <div class="top-bar" align="center">
+      <button class="btn" id="prev-page">
+        <i class="fas fa-arrow-circle-left"></i> Prev Page
+      </button>
+      <button class="btn" id="next-page">
+        Next Page <i class="fas fa-arrow-circle-right"></i>
+      </button>
+      <span class="page-info">
+        Page <span id="page-num"></span> of <span id="page-count"></span>
+      </span>
+    </div>
+
+    <canvas id="pdf-render" width=100%></canvas>
+    
+    
+    </center>
+          <!--   PDF section Ends here...  -->
+
+
+
+
+
+
+
+      <!--    Javascript to View PDF-->
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script >
+          // URL of PDF file 
+          //Paste carefully
+        const url = 'pdfs/ch01.pdf';
+
+let pdfDoc = null,
+  pageNum = 1,
+  pageIsRendering = false,
+  pageNumIsPending = null;
+
+const scale = 1.5,
+  canvas = document.querySelector('#pdf-render'),
+  ctx = canvas.getContext('2d');
+
+// Render the page
+const renderPage = num => {
+  pageIsRendering = true;
+
+  // Get page
+  pdfDoc.getPage(num).then(page => {
+    // Set scale
+    const viewport = page.getViewport({ scale });
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    const renderCtx = {
+      canvasContext: ctx,
+      viewport
+    };
+
+    page.render(renderCtx).promise.then(() => {
+      pageIsRendering = false;
+
+      if (pageNumIsPending !== null) {
+        renderPage(pageNumIsPending);
+        pageNumIsPending = null;
+      }
+    });
+
+    // Output current page
+    document.querySelector('#page-num').textContent = num;
+  });
+};
+
+// Check for pages rendering
+const queueRenderPage = num => {
+  if (pageIsRendering) {
+    pageNumIsPending = num;
+  } else {
+    renderPage(num);
+  }
+};
+
+// Show Prev Page
+const showPrevPage = () => {
+  if (pageNum <= 1) {
+    return;
+  }
+  pageNum--;
+  queueRenderPage(pageNum);
+};
+
+// Show Next Page
+const showNextPage = () => {
+  if (pageNum >= pdfDoc.numPages) {
+    return;
+  }
+  pageNum++;
+  queueRenderPage(pageNum);
+};
+
+// Get Document
+pdfjsLib
+  .getDocument(url)
+  .promise.then(pdfDoc_ => {
+    pdfDoc = pdfDoc_;
+
+    document.querySelector('#page-count').textContent = pdfDoc.numPages;
+
+    renderPage(pageNum);
+  })
+  .catch(err => {
+    // Display error
+    const div = document.createElement('div');
+    div.className = 'error';
+    div.appendChild(document.createTextNode(err.message));
+    document.querySelector('body').insertBefore(div, canvas);
+    // Remove top bar
+    document.querySelector('.top-bar').style.display = 'none';
+  });
+
+// Button Events
+document.querySelector('#prev-page').addEventListener('click', showPrevPage);
+document.querySelector('#next-page').addEventListener('click', showNextPage);
+
+    </script>
+    
+          <!-- Javascript Ends here -->
+          
+          
+          
+          
+          
+          
+                <!--  Footer  -->
+                <!-- Copyrights By Akash -->
+                
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              
+                 
+ <hr color="white">
+<center>
+<font color="white">
+ <p> © 2021 Excellent Defence Physics. All rights reserved | Designed by Akash</p> </font>
+     </div>
+        </div>
+    </footer>
+ <hr color="white">
+</center>
+                
+                
+                <!--  Copyright ends here   -->
+    
+  </body>
+</html>
